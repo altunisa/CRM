@@ -1,22 +1,16 @@
-from __future__ import annotations
-
 from fastapi import FastAPI
+from app.core.config import settings
+from app.routers import crm, geo, ministry, scoring, bku, crm_firmalar
 
-from app.core.database import Base, engine
-from app.routers import bku, crm, crm_firmalar
+app = FastAPI(title=settings.APP_NAME, version=settings.APP_VERSION)
 
-app = FastAPI(title="BKU Smart CRM", version="2.0.0")
-
-app.include_router(crm.router)
-app.include_router(crm_firmalar.router)
+app.include_router(ministry.router, prefix="/ministry", tags=["Ministry"])
+app.include_router(crm.router, prefix="/crm", tags=["CRM"])
+app.include_router(crm_firmalar.router, prefix="/crm/firms", tags=["CRM Firms"])
+app.include_router(scoring.router, prefix="/scoring", tags=["Scoring"])
+app.include_router(geo.router, prefix="/geo", tags=["Geo"])
 app.include_router(bku.router)
 
-
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
-
-@app.on_event("startup")
-def startup() -> None:
-    Base.metadata.create_all(bind=engine)
+@app.get("/")
+def root():
+    return {"status": "ok", "app": settings.APP_NAME}

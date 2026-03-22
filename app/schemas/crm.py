@@ -1,30 +1,17 @@
-from __future__ import annotations
-
 from datetime import datetime
-
-from pydantic import BaseModel
-
-
-class FirmClassificationPatch(BaseModel):
-    ruhsat_sahibi: bool | None = None
-    uretici: bool | None = None
-    ithalatci: bool | None = None
-    bayi: bool | None = None
-    toptanci: bool | None = None
-    distributor: bool | None = None
-    karma_firma: bool | None = None
-    firma_tipi_ana: str | None = None
-    hedef_iliski_tipi: str | None = None
-    firma_segment: str | None = None
-    stratejik_skor: float | None = None
-    kanal_skor: float | None = None
-    operasyon_skor: float | None = None
-    siniflandirma_notu: str | None = None
+from pydantic import BaseModel, EmailStr
 
 
-class FirmScores(BaseModel):
+class CrmEnrichmentUpsert(BaseModel):
     gln: str
-    stratejik_skor: float
-    kanal_skor: float
-    operasyon_skor: float
-    updated_at: datetime | None
+    phone_mobile: str | None = None
+    phone_office: str | None = None
+    email_marketing: EmailStr | None = None
+    authorized_person: str | None = None
+    authorized_title: str | None = None
+    annual_potential_volume: float | None = None
+    current_competitor_brands: str | None = None
+    customer_note: str | None = None
+    enrichment_status: str | None = None
+    enriched_by: str | None = None
+    enriched_at: datetime | None = None
